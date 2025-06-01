@@ -274,7 +274,19 @@
             <section id="overview-section" class="content-section">
                 <h2>Welcome to Mazhabi Forums!</h2>
                 <p>This is the main site content. Click "Register" in the header to see the signup form.</p>
-                <button class="btn btn-primary" id="trigger-signup-from-main" style="padding: 10px; border: none; background: #ff0034; color: #fff;">Go to Signup! </button>
+                <button class="btn btn-primary" id="trigger-signup-from-main" style="padding: 10px; border: none; background: #ff0034; color: #fff;">Go to Signup! </button> &nbsp; <button class="btn btn-primary"  style="padding: 10px; border: none; background: #ff0034; color: #fff;">How to Join</button>
+            </section>
+            
+            <section id="overview-section" class="content-section" >
+                
+                <div style="display: flex; gap: 15px; justify-content: center; flex-direction: warp;">
+               <p style="background: #ff0034; color: #fff; padding: 15px;"> <i class="fa-solid fa-user-group"></i> 4000+ Rejistretion</p> <p style="background: #ff0034; color: #fff; padding: 15px;"><i class="fa-regular fa-flag"></i> Overwide 10+ Country </p> </div>
+               
+               <div style="display: flex; gap: 15px; justify-content: center; flex-direction: warp;"><p style="background: #ff0034; color: #fff; padding: 15px;"><i class="fa-solid fa-lock"></i> Z+ Security </p>
+               
+               <p style="background: #ff0034; color: #fff; padding: 15px;"> <i class="fa-solid fa-wifi"></i> No Need VPN  </p>
+               
+               </div>
             </section>
         </main>
         <footer class="site-footer" id="main-site-footer">
@@ -334,17 +346,17 @@
                             <label for="country"><i class="fas fa-flag-usa"></i> Country *</label>
                             <select id="country" name="country" required>
                                 <option value="">-- Select Your Country --</option>
-                                <option value="USA">United States</option> <option value="CAN">Canada</option>
-                                <option value="GBR">United Kingdom</option> <option value="AUS">Australia</option>
-                                <option value="IND">India</option><option value="DEU">Germany</option>
-                                 <option value="BGD">Bangladesh</option> 
+                                <option value="Bangladesh">Bangladesh </option> <option value="CAN">Canada</option>
+                                <option value="India">India</option> <option value="AUS">Australia</option>
+                                <option value="Pakistan">Pakistan</option><option value="DEU">Germany</option>
+                                 <option value="USA">USA</option> 
                                 <option value="OTHER">Other</option>
                             </select>
                             <span class="error-message"></span>
                         </div>
                         <div class="form-group">
                             <label for="age"><i class="fas fa-calendar-alt"></i> Age (Years) *</label>
-                            <input type="number" id="age" name="age" min="17" max="70" placeholder="e.g., 25" required>
+                            <input type="number" id="age" name="age" min="17" max="70" placeholder=".." required>
                             <span class="error-message"></span>
                         </div>
                     </div>
@@ -394,8 +406,8 @@
         const triggerSignupFromMainBtn = document.getElementById('trigger-signup-from-main'); 
 
         const slideshowImages = [ 
-            'https://i.postimg.cc/fWgbgfvc/b2e4bfbe-9c18-4312-bb75-ed6c2e814923.jpg', 'https://i.postimg.cc/fb0FDD4W/images.jpg',
-            'https://i.postimg.cc/T1CGgf3M/images-1.jpg', 'https://i.postimg.cc/q7yGR71R/images-3.jpg',
+            'https://i.postimg.cc/ydsr2zmB/Arabian-Beauty-Women-Hijab-Fashion.jpg', 'https://i.postimg.cc/7PBQtdf8/Muslim-looking-hot-fashion.jpg',
+            'https://i.postimg.cc/T1CGgf3M/images-1.jpg', 'https://mult34.com/wp-content/uploads/2021/01/Moms-Help-11-page-60.jpg',
             'https://i.postimg.cc/ZK4XzGKp/images-2.jpg'
         ];
         let currentImageIndex = 0;
