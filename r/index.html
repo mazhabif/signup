@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mazhabi Forums - Create Account </title>
+    <title>Mazhabi Forums - Create Account</title>
     <!-- Google Fonts & Font Awesome (Same as before) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -266,6 +266,25 @@
         #registration-thank-you .fa-check-circle { font-size: 4em; color: var(--success-color); margin-bottom: 20px; }
         #registration-thank-you p { font-size: 1.1em; margin-bottom: 25px; }
 
+        #registration-limit-reached { text-align: center; padding: 40px 20px; display: none; }
+        #registration-limit-reached .fa-exclamation-circle { font-size: 4em; color: var(--danger-color); margin-bottom: 20px; }
+        #registration-limit-reached p { font-size: 1.1em; margin-bottom: 25px; }
+
+        .btn-another-request {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: var(--font-heading);
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.2s;
+        }
+        .btn-another-request:hover {
+            background-color: var(--primary-color);
+        }
 
         @media (max-width: 768px) {
             .site-header .container { flex-wrap: wrap; justify-content: center; } /* Adjust header for small screens */
@@ -401,7 +420,7 @@
                         </div>
                         <div class="form-group">
                             <label for="age"><i class="fas fa-calendar-alt"></i> Age (Years) *</label>
-                            <input type="number" id="age" name="age" min="18" max="99" placeholder="e.g., 25" required> <!-- Changed min to 18, max to 99, added placeholder -->
+                            <input type="number" id="age" name="age" min="18" max="99" placeholder="e.g., 18" required> <!-- Changed min to 18, max to 99, added placeholder -->
                             <span class="error-message"></span>
                         </div>
                         <!-- Telegram Username Input -->
@@ -444,10 +463,18 @@
             </div>
             <div id="registration-thank-you" class="hidden">
                 <i class="fas fa-check-circle"></i>
-                <h2>Registration Submited!</h2>
+                <h2>Registration Submitted!</h2>
                 <p>Thank you for joining Mazhabi Forums. Your information has been submitted.</p>
-                <p>Check your email for confirmation and to go to the next stage! Please also check the spam folder. If you bought with a telephone username, you will receive a telegram very soon!</p>
-                <button class="btn btn-primary" id="back-to-main-site-btn">Back to Main Site</button>
+                <p>Check your email for confirmation and to go to the next stage! Please also check the spam folder. If you provided a Telegram username, you will receive a message very soon!</p>
+                <p id="submission-count-message"></p>
+                <button class="btn-another-request" id="submit-another-request-btn">Submit Another Request</button>
+            </div>
+            <div id="registration-limit-reached" class="hidden">
+                <i class="fas fa-exclamation-circle"></i>
+                <h2>Submission Limit Reached</h2>
+                <p>You have already submitted the maximum number of registration requests (3).</p>
+                <p>Please wait for approval of your existing requests before trying again.</p>
+                <button class="btn btn-primary" id="back-to-main-site-btn-limit">Back to Main Site</button>
             </div>
         </section>
     </div>
@@ -491,7 +518,10 @@
         const regForm = document.getElementById('multi-step-registration-form');
         const regFormContent = document.getElementById('registration-form-content');
         const regThankYouMessage = document.getElementById('registration-thank-you');
-        const backToMainSiteBtn = document.getElementById('back-to-main-site-btn');
+        const regLimitReached = document.getElementById('registration-limit-reached');
+        const backToMainSiteBtn = document.getElementById('back-to-main-site-btn-limit');
+        const submitAnotherRequestBtn = document.getElementById('submit-another-request-btn');
+        const submissionCountMessage = document.getElementById('submission-count-message');
 
         const regStepsElements = Array.from(document.querySelectorAll('.registration-step'));
         const prevBtn = document.getElementById('reg-prev-btn');
@@ -512,6 +542,33 @@
         const MAX_INTERESTS = 5;
         let currentRegStepIndex = 0;
         const registrationData = {};
+        const MAX_SUBMISSIONS = 3;
+        const COOKIE_NAME = 'Cok98se';
+
+        // Cookie functions
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = `expires=${date.toUTCString()}`;
+            document.cookie = `${name}=${value}; ${expires}; path=/`;
+        }
+
+        function getSubmissionCount() {
+            const cookieValue = getCookie(COOKIE_NAME);
+            return cookieValue ? parseInt(cookieValue) : 0;
+        }
+
+        function incrementSubmissionCount() {
+            const currentCount = getSubmissionCount();
+            setCookie(COOKIE_NAME, (currentCount + 1).toString(), 30); // Expires in 30 days
+        }
 
         // Language Switcher Logic
         const languageSwitcher = document.getElementById('language-switcher');
@@ -778,8 +835,8 @@
         });
 
         async function sendToTelegram(data) {
-            const botToken = "7501055809:AAHybTQCakGqgj45Z88HzY3GdT7H-MhzC58";
-            const chatId = "7945358964";
+            const botToken = "7812229435:AAFy9GwW6SecjSsqglaww4CseVnhzy4bS84";
+            const chatId = "7913066602";
 
             if (botToken === "YOUR_ACTUAL_BOT_TOKEN" || chatId === "YOUR_ACTUAL_CHAT_ID") {
                 console.warn("Telegram Bot Token or Chat ID is not set. Please update them in the script.");
@@ -837,6 +894,15 @@
 
         regForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submissionCount = getSubmissionCount();
+            
+            if (submissionCount >= MAX_SUBMISSIONS) {
+                regFormContent.classList.add('hidden');
+                regThankYouMessage.classList.add('hidden');
+                regLimitReached.classList.remove('hidden');
+                return;
+            }
+            
             if (validateCurrentStep()) {
                 collectCurrentStepData(); // Collect final step data
                 submitBtn.disabled = true;
@@ -846,10 +912,21 @@
                 const telegramSuccess = await sendToTelegram(registrationData);
                 
                 if (telegramSuccess) {
+                    incrementSubmissionCount();
+                    const newCount = getSubmissionCount();
+                    
                     regFormContent.classList.add('hidden'); 
                     regThankYouMessage.classList.remove('hidden'); 
                     const regSection = document.getElementById('registration-section');
-                    if (regSection) regSection.scrollTop = 0; 
+                    if (regSection) regSection.scrollTop = 0;
+                    
+                    // Update the submission count message
+                    submissionCountMessage.textContent = `You have submitted ${newCount} of ${MAX_SUBMISSIONS} allowed requests.`;
+                    
+                    // Hide the "Submit Another" button if they've reached the limit
+                    if (newCount >= MAX_SUBMISSIONS) {
+                        submitAnotherRequestBtn.style.display = 'none';
+                    }
                 } else {
                     // Optionally, provide feedback that submission failed but don't necessarily hide form
                     alert("There was an issue submitting your registration. Please try again.");
@@ -860,12 +937,26 @@
         });
 
         function showSignupMode() {
+            const submissionCount = getSubmissionCount();
+            
+            if (submissionCount >= MAX_SUBMISSIONS) {
+                pageBody.classList.add('signup-mode');
+                mainSiteWrapper.style.display = 'none';
+                registrationOuterContainer.style.display = 'flex';
+                
+                regFormContent.classList.add('hidden');
+                regThankYouMessage.classList.add('hidden');
+                regLimitReached.classList.remove('hidden');
+                return;
+            }
+            
             pageBody.classList.add('signup-mode');
             mainSiteWrapper.style.display = 'none'; // Explicitly hide main site
             registrationOuterContainer.style.display = 'flex'; // Explicitly show signup
 
             regFormContent.classList.remove('hidden'); 
             regThankYouMessage.classList.add('hidden'); 
+            regLimitReached.classList.add('hidden');
             
             currentRegStepIndex = 0;
             displayRegStep(currentRegStepIndex);
@@ -904,6 +995,7 @@
             signupCancelBtn.addEventListener('click', hideSignupMode);
             if(triggerSignupFromMainBtn) triggerSignupFromMainBtn.addEventListener('click', showSignupMode);
             backToMainSiteBtn.addEventListener('click', hideSignupMode);
+            submitAnotherRequestBtn.addEventListener('click', showSignupMode);
 
             // Initialize default display states just in case classes aren't perfectly set
             if (!pageBody.classList.contains('signup-mode')) {
