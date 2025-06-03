@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mazhabi Forums - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #ff3333;
+            --secondary-color: #cc0000;
+            --accent-color: #ff6666;
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --muted-text-color: #888888;
+            --danger-color: #ff4d4d;
+            --warning-color: #ffc107;
+            --success-color: #4CAF50;
+            --border-color: #333333;
+            --input-bg-color: rgba(10,10,10,0.75);
+            --border-radius: 4px;
+            --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Roboto', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            transition: background-image 1.5s ease-in-out;
+            align-items: center; /* Center content vertically */
+            justify-content: center; /* Center content horizontally */
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            color: var(--primary-color);
+        }
+
+        #login-outer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 10;
+        }
+
+        #login-section {
+            background-color: rgba(30, 30, 30, 0.92);
+            backdrop-filter: blur(10px);
+            padding: 30px 35px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 450px; /* Adjusted for typical login form width */
+        }
+        #login-section h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+        #login-section h2 i {
+            margin-right: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .form-group label {
+            display: block;
+            font-family: var(--font-heading);
+            color: var(--accent-color);
+            margin-bottom: 6px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .form-group label i {
+            margin-right: 6px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 11px 12px;
+            background-color: var(--input-bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 0.95em;
+            font-family: var(--font-body);
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input::placeholder {
+            color: var(--muted-text-color);
+            opacity: 0.7;
+        }
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.15rem rgba(255,51,51,.2);
+            outline: none;
+        }
+        .form-group input.input-error {
+            border-color: var(--danger-color) !important;
+        }
+        .error-message {
+            display: block;
+            color: var(--danger-color);
+            font-size: 0.8em;
+            margin-top: 4px;
+            min-height: 1.2em; /* Reserve space to prevent layout shifts */
+        }
+        .error-message:empty {
+            visibility: hidden;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-family: var(--font-heading);
+            font-size: 1.05em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px; /* Add some space above the button */
+        }
+        .btn-login:hover {
+            background-color: var(--secondary-color);
+        }
+        .btn-login i {
+            margin-right: 8px;
+        }
+        .form-group.general-error .error-message {
+            text-align: center;
+            font-size: 0.9em;
+            margin-top: 15px;
+            min-height: 1.5em;
+        }
+
+        @media (max-width: 480px) {
+             #login-section { padding: 20px 25px; margin: 10px; }
+             #login-section h2 { font-size: 1.6em; }
+             .form-group label { font-size: 0.85em; }
+             .form-group input { font-size: 0.9em; padding: 10px; }
+             .btn-login { font-size: 1em; }
+        }
+    </style>
+</head>
+<body id="page-body">
+
+    <div id="login-outer-container">
+        <section id="login-section">
+            <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+            <form id="login-form" novalidate>
+                <div class="form-group">
+                    <label for="ray-id"><i class="fas fa-id-card"></i> Ray ID</label>
+                    <input type="text" id="ray-id" name="rayId" placeholder="Enter your Ray ID" required>
+                    <span class="error-message" id="ray-id-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <span class="error-message" id="password-error"></span>
+                </div>
+
+                <button type="submit" class="btn-login" id="login-btn"><i class="fas fa-paper-plane"></i> Login</button>
+
+                <div class="form-group general-error">
+                    <span class="error-message" id="general-login-error"></span>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        const pageBody = document.getElementById('page-body');
+        const slideshowImages = [
+            'https://i.postimg.cc/ydsr2zmB/Arabian-Beauty-Women-Hijab-Fashion.jpg',
+            'https://i.postimg.cc/7PBQtdf8/Muslim-looking-hot-fashion.jpg',
+            'https://i.postimg.cc/T1CGgf3M/images-1.jpg',
+            'https://i.postimg.cc/ZK4XzGKp/images-2.jpg'
+        ];
+        let currentImageIndex = 0;
+
+        function changeBackgroundImage() {
+            if (slideshowImages.length === 0) return;
+            currentImageIndex = (currentImageIndex + 1) % slideshowImages.length;
+            const tempImg = new Image();
+            tempImg.onload = () => {
+                pageBody.style.backgroundImage = `url('${slideshowImages[currentImageIndex]}')`;
+            };
+            tempImg.src = slideshowImages[currentImageIndex];
+        }
+
+        if (slideshowImages.length > 0) {
+            const firstImg = new Image();
+            firstImg.onload = () => {
+                pageBody.style.backgroundImage = `url('${slideshowImages[0]}')`;
+            };
+            firstImg.src = slideshowImages[0];
+            setInterval(changeBackgroundImage, 7000); // Change image every 7 seconds
+        }
+
+        // Login Form Logic
+        const loginForm = document.getElementById('login-form');
+        const rayIdInput = document.getElementById('ray-id');
+        const passwordInput = document.getElementById('password');
+        const rayIdError = document.getElementById('ray-id-error');
+        const passwordError = document.getElementById('password-error');
+        const generalLoginError = document.getElementById('general-login-error');
+        const loginBtn = document.getElementById('login-btn');
+
+        function displayError(element, message) {
+            element.textContent = message;
+            element.style.visibility = 'visible';
+            // If the error is for an input, find the input and add error class
+            const inputField = element.previousElementSibling; // Assumes error span is directly after input
+            if (inputField && (inputField.tagName === 'INPUT')) {
+                inputField.classList.add('input-error');
+            }
+        }
+
+        function clearError(element) {
+            element.textContent = '';
+            element.style.visibility = 'hidden';
+            const inputField = element.previousElementSibling;
+            if (inputField && (inputField.tagName === 'INPUT')) {
+                inputField.classList.remove('input-error');
+            }
+        }
+        
+        function clearAllErrors() {
+            clearError(rayIdError);
+            clearError(passwordError);
+            clearError(generalLoginError);
+            rayIdInput.classList.remove('input-error');
+            passwordInput.classList.remove('input-error');
+        }
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            clearAllErrors();
+
+            let isValid = true;
+            const rayIdValue = rayIdInput.value.trim();
+            const passwordValue = passwordInput.value.trim();
+
+            // Validate Ray ID
+            if (rayIdValue.length < 6) {
+                displayError(rayIdError, 'Ray ID must be at least 6 characters.');
+                isValid = false;
+            }
+
+            // Validate Password
+            if (passwordValue.length < 6) {
+                displayError(passwordError, 'Password must be at least 6 characters.');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Simulate API call and "User ID Not Found" error
+                loginBtn.disabled = true;
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+                setTimeout(() => {
+                    displayError(generalLoginError, 'Error: User ID Not Found.');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Login';
+                }, 1000); // Simulate network delay
+            } else {
+                // Focus the first field with an error
+                if (rayIdInput.classList.contains('input-error')) {
+                    rayIdInput.focus();
+                } else if (passwordInput.classList.contains('input-error')) {
+                    passwordInput.focus();
+                }
+            }
+        });
+
+        // Clear errors when user starts typing
+        rayIdInput.addEventListener('input', () => clearError(rayIdError));
+        passwordInput.addEventListener('input', () => clearError(passwordError));
+
+    </script>
+</body>
+</html>
